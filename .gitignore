@@ -1,2 +1,5 @@
 /hello-cargo/target
 /hello-cargo/Cargo.lock
+
+/guessing-your-name/target
+/guessing-your-name/Cargo.lock

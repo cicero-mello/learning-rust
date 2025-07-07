@@ -29,4 +29,13 @@ fn main() {
 /*
     fazendo o build com --release, os arquivos gerados vao para
     ./target/release em vez de ./target/debug
+
+    ainda assim, saiba que o build tem uma otimização HORROROSA,
+    HORRÍVEL, ao ponto de que aquele hello world ali de cima
+    gere 4MB de binaries (sim, mesmo com a versão release)!
+
+    É possível deixar o tamanho mais viável através de
+    uma série de configurações, mas cada configuração
+    pra isso pode acabar reduzindo a performance, então
+    é o tipo de troca que deve ser feita com total ciência.
 */
