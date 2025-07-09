@@ -65,4 +65,7 @@ fn main() {
 
     let s = 'ß'.to_uppercase().collect::<String>();
     println!("{}", s); // imprime "SS"
+
+    caso fosse o cenário de adicionar só 1 char (garantido),
+    em vez de usar "extend", poderia ser usado "push"
 */

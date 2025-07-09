@@ -3,3 +3,6 @@
 
 /guessing-your-name/target
 /guessing-your-name/Cargo.lock
+
+/functions/target
+/functions/Cargo.lock
