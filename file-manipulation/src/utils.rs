@@ -1,4 +1,4 @@
-use std::fs::{ File, create_dir_all };
+use std::fs::{ File, create_dir_all, read_to_string };
 use std::io::prelude::Write; // para usar write_all
 use std::path::{ Path, PathBuf };
 
@@ -34,5 +34,16 @@ pub fn create_file(folder: &str, name: &str, content: &str) {
 
     file.write_all(content.as_bytes()).expect("Error to write file");
 
-    println!("File Created! Checkout {:?}", file_path);
+    println!("\nFile Created! Checkout {:?}", file_path);
+}
+
+pub fn read_file(folder: &str, name: &str) {
+    let path = Path::new(folder).join(name);
+
+    let read_result = read_to_string(&path);
+
+    match read_result {
+        Ok(content) => println!("\nContent:\n{}", content),
+        Err(e) => eprint!("\nFail to read: {}", e)
+    };
 }

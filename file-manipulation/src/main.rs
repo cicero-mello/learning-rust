@@ -1,5 +1,6 @@
 mod utils;
 use std::io::stdin;
+use crate::utils::read_file;
 
 fn main() {
     print!("\x1B[2J\x1B[1;1H\n");
@@ -24,4 +25,21 @@ fn main() {
         file_name.as_str().trim(),
         text.as_str()
     );
+
+    println!("Want to read them? (y/n)");
+    let mut answer = String::new();
+
+    loop {
+        stdin().read_line(&mut answer).expect("Error");
+        let answer_str = answer.as_str().trim();
+
+        if answer_str == "y" {
+            read_file(folder.as_str().trim(), file_name.as_str().trim());
+            break;
+        }
+        else if answer_str == "n" {
+            break;
+        }
+        println!("Invalid answer, try again (with 'y' our 'n'):");
+    }
 }
