@@ -1,12 +1,12 @@
 use argon2::{
+    Algorithm,
     Argon2,
     Params,
-    Algorithm,
+    PasswordHasher,
+    PasswordVerifier,
     Version,
-    PasswordHasher, // precisa pro "hash_password"
     password_hash::{
-        SaltString,
-        rand_core::OsRng,
+        rand_core::OsRng, SaltString
     }
 };
 
@@ -25,4 +25,27 @@ fn main() {
 
     let hash_password_1 = argon2.hash_password(password_1.as_bytes(), &salt).expect("Error");
     println!("\nHash:\n{}", hash_password_1);
+
+
+    // Testando senha correta
+    let verify_pass_response = argon2.verify_password("jus7_@_n0rm@1_p@55".as_bytes(), &hash_password_1);
+    match verify_pass_response {
+        Err(e) => {
+            println!("Error:\n {}", e);
+        },
+        Ok(r) => {
+            println!("Success:\n {:?}", r);
+        }
+    }
+
+    // Testando senha errada
+    let verify_pass_response_2 = argon2.verify_password("jus7_@_n0rm@1_p@57".as_bytes(), &hash_password_1);
+    match verify_pass_response_2 {
+        Err(e) => {
+            println!("Error:\n {}", e);
+        },
+        Ok(r) => {
+            println!("Success:\n {:?}", r);
+        }
+    }
 }
