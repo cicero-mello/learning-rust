@@ -6,7 +6,7 @@ use argon2::{
 
 pub struct GenerateKeyResponse {
     pub key: Key<Aes256Gcm>,
-    pub salt_string: SaltString,
+    pub salt: Vec<u8>,
 }
 
 pub fn generate_key(
@@ -30,5 +30,8 @@ pub fn generate_key(
 
     let key = Key::<Aes256Gcm>::from_slice(&output_key).clone();
 
-    return GenerateKeyResponse { key, salt_string };
+    let mut salt_bytes = vec![0u8; 16];
+    salt_string.decode_b64(&mut salt_bytes).expect("Failed to decode salt base64");
+
+    return GenerateKeyResponse { key, salt: salt_bytes };
 }

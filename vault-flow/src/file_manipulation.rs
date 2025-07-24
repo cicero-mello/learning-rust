@@ -32,8 +32,6 @@ pub fn create_file(folder: &str, name: &str, content: &[u8]) {
     let mut file = File::create(&file_path).expect("Error to create file");
 
     file.write_all(content).expect("Error to write file");
-
-    println!("\nFile Created! Checkout {:?}", file_path);
 }
 
 pub struct VaultFile {
@@ -42,23 +40,41 @@ pub struct VaultFile {
     pub cipher_text: Vec<u8>
 }
 
-pub fn read_file(folder: &str, name: &str) -> VaultFile {
+pub fn read_vault_file(folder: &str, name: &str) -> VaultFile {
     let path = Path::new(folder).join(name);
 
-    let file_bytes = read(path).expect("Erro ao ler o arquivo");
+    let file_bytes = read(path).expect("Error");
 
     if file_bytes.len() < 28 {
-        panic!("Arquivo inválido: tamanho insuficiente para conter salt e nonce");
+        panic!("Invalid File Size");
     }
 
-    // Extrai os dados
     let salt = file_bytes[0..16].to_vec();
     let nonce = file_bytes[16..28].to_vec();
     let cipher_text = file_bytes[28..].to_vec();
 
-    println!("Salt:\n{:?}", salt);
-    println!("Nonce:\n{:?}", nonce);
-    println!("Cipher Text:\n{:?}", cipher_text);
-
     return VaultFile { salt, nonce, cipher_text };
+}
+
+pub fn list_files(folder: &str) -> Result<Vec<String>, std::io::Error> {
+    let path = Path::new(folder);
+
+    if !path.exists() {
+        return Err(std::io::Error::new(std::io::ErrorKind::NotFound, "Pasta não encontrada"));
+    }
+
+    let mut file_names = Vec::new();
+
+    for entry in std::fs::read_dir(path)? {
+        let entry = entry?;
+        let metadata = entry.metadata()?;
+
+        if metadata.is_file() {
+            if let Some(name) = entry.file_name().to_str() {
+                file_names.push(name.to_string());
+            }
+        }
+    }
+
+    Ok(file_names)
 }
